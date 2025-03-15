@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clash Royale</title>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <style>
+        @font-face {
+            font-family: 'ClashRoyale';
+            src: url('Clash_Regular.otf') format('opentype');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'ClashRoyale', Arial, sans-serif;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            color: white;
+            text-shadow: 2px 2px 5px black;
+            opacity: 0; /* Oculta la web hasta que el video cargue */
+            transition: opacity 1s ease-in-out;
+        }
+
+        /* Contenedor del video de fondo */
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        /* Iframe del video */
+        #youtube-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 56.25vw; /* Relación de aspecto 16:9 */
+            min-height: 100vh;
+            min-width: 177.78vh;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        /* Contenedor del contenido */
+        .container {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            border-radius: 10px;
+            z-index: 2;
+        }
+
+        /* Logo */
+        .logo {
+            max-width: 300px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 20px;
+            font-family: 'ClashRoyale', Arial, sans-serif;
+            margin-bottom: 25px;
+        }
+
+        /* Botón */
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 18px;
+            color: white;
+            background: linear-gradient(to bottom, #ffdd44, #ffbb00);
+            border: 3px solid orange;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:hover {
+            background: linear-gradient(to bottom, #ffcc33, #ffa500);
+        }
+
+        /* Botón de mute */
+        .mute-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            z-index: 3;
+        }
+
+        .mute-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Contenedor del video de fondo -->
+    <div class="video-background">
+        <div id="youtube-video"></div>
+    </div>
+
+    <!-- Contenedor del contenido -->
+    <div class="container">
+        <img src="https://supercell.com/images/53c91cc7ddf17d5b6fa13cae4762af1b/790/main_logo_clashroyale.5e3fbb70__1_.webp" alt="Clash Royale" class="logo">
+        <p>¡Reclama una recompensa en Clash Royale!</p>
+        <a href="clashroyale://" class="btn">Reclamar recompensa</a>
+        <p> </p>
+        <p>Descargar Clash Royale</p>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" class="google-play">
+    </div>
+
+    <!-- Botón de mute -->
+    <button class="mute-btn" onclick="toggleMute()">🔇</button>
+
+    <script>
+        let player;
+        let isMuted = true;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-video', {
+                videoId: 'SXVjltC4ZGo', // ID del video
+                playerVars: {
+                    autoplay: 1,
+                    mute: 1,
+                    loop: 1,
+                    playlist: 'SXVjltC4ZGo',
+                    controls: 0,
+                    showinfo: 0,
+                    modestbranding: 1,
+                    rel: 0
+                },
+                events: {
+                    onReady: function (event) {
+                        event.target.setPlaybackQuality('hd1080'); // Fuerza la calidad 1080p si está disponible
+                        document.body.style.opacity = "1"; // Muestra la web cuando el video está listo
+                    }
+                }
+            });
+        }
+
+        function toggleMute() {
+            if (isMuted) {
+                player.unMute();
+                document.querySelector(".mute-btn").textContent = "🔊";
+            } else {
+                player.mute();
+                document.querySelector(".mute-btn").textContent = "🔇";
+            }
+            isMuted = !isMuted;
+        }
+    </script>
+
+</body>
+</html>
